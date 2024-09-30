@@ -2,28 +2,34 @@ import win32gui
 import win32api
 import win32con
 import time
-#import pyautogui
+
 
 child_handles = []
 
-def hwnd_finder():
 
+def sound_off(): 
+    lParam = win32api.MAKELONG(35, 450)
+    win32api.SendMessage(child_handles[-3], win32con.WM_LBUTTONDOWN, win32con.MK_LBUTTON, lParam)
+    win32api.SendMessage(child_handles[-3], win32con.WM_LBUTTONUP, win32con.MK_LBUTTON, lParam)
+
+def hwnd_finder():
     hWnd = win32gui.FindWindow(None, "TelegramDesktop")
     return hWnd
 
-def hwnd_finder_child(hwnd, param):
+def all_ok(hwnd, param):
     child_handles.append(hwnd)
 
-def click(x,y):
-
-    lParam = win32api.MAKELONG(x, y)
-    #клик
+def clicker(x,y):
+    lParam = win32api.MAKELONG(x, y) #position of the clicker
+    #clicker
     win32api.SendMessage(child_handles[-3], win32con.WM_LBUTTONDOWN, win32con.MK_LBUTTON, lParam)
     win32api.SendMessage(child_handles[-3], win32con.WM_LBUTTONUP, win32con.MK_LBUTTON, lParam)
     time.sleep(0.01)
 
 
-win32gui.EnumChildWindows(hwnd_finder(), hwnd_finder_child, None)
+win32gui.EnumChildWindows(hwnd_finder(), all_ok, None)
+
+sound_off()
 
 while True:
-    click(190,345)
+    clicker(190,345)
